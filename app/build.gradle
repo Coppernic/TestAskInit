@@ -27,8 +27,10 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:25.3.1'
-    compile 'fr.coppernic.sdk.ask:CpcAsk:3.0.0'
-    compile 'fr.coppernic.sdk.core:CpcCore:1.0.0'
-    compile 'fr.coppernic.sdk.cpcutils:CpcUtilsLib:6.7.0'
+    compile(name:'CpcPowerMgmt-3.5.3', ext:'aar')
+    compile(name:'CpcHdkCone-1.10.1', ext:'aar')
+    compile(name:'CpcUtilsLib-6.1.0', ext:'aar')
+    compile(name:'CpcAsk-2.0.2', ext:'aar')
+    compile(name:'CpcSerialCommunication-1.1.1', ext:'aar')
     testCompile 'junit:junit:4.12'
 }

@@ -1,39 +1,29 @@
 package fr.coppernic.testaskinit;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
+import android.view.View;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+
 import java.util.Random;
 
-import fr.coppernic.sdk.ask.Defines;
-import fr.coppernic.sdk.ask.Reader;
-import fr.coppernic.sdk.ask.ReaderListener;
-import fr.coppernic.sdk.ask.RfidTag;
-import fr.coppernic.sdk.ask.SearchParameters;
-import fr.coppernic.sdk.ask.sCARD_SearchExt;
-import fr.coppernic.sdk.powermgmt.PowerMgmt;
-import fr.coppernic.sdk.powermgmt.PowerMgmtFactory;
-import fr.coppernic.sdk.powermgmt.cone.identifiers.InterfacesCone;
-import fr.coppernic.sdk.powermgmt.cone.identifiers.ManufacturersCone;
-import fr.coppernic.sdk.powermgmt.cone.identifiers.ModelsCone;
-import fr.coppernic.sdk.powermgmt.cone.identifiers.PeripheralTypesCone;
-import fr.coppernic.sdk.utils.core.CpcBytes;
+import fr.coppernic.cpcframework.cpcask.Defines;
+import fr.coppernic.cpcframework.cpcask.OnGetReaderInstanceListener;
+import fr.coppernic.cpcframework.cpcask.Reader;
+import fr.coppernic.cpcframework.cpcpowermgmt.PowerMgmtFactory;
+import fr.coppernic.cpcframework.cpcpowermgmt.PowerMgmt;
 import fr.coppernic.sdk.utils.core.CpcDefinitions;
 import fr.coppernic.sdk.utils.io.InstanceListener;
 
-public class MainActivity extends AppCompatActivity  implements InstanceListener<Reader>, ReaderListener{
+
+public class MainActivity extends AppCompatActivity  implements InstanceListener<Reader>, OnGetReaderInstanceListener{
     public static final String TAG = "TestAskInit";
     private PowerMgmt powerMgmt;
     private Reader reader;
@@ -71,10 +61,10 @@ public class MainActivity extends AppCompatActivity  implements InstanceListener
         // Instantiates power management object
         powerMgmt = PowerMgmtFactory.get().
                 setContext(this).
-                setPeripheralTypes(PeripheralTypesCone.RfidSc).
-                setManufacturers(ManufacturersCone.Ask).
-                setModels(ModelsCone.Ucm108).
-                setInterfaces(InterfacesCone.ExpansionPort).
+                setPeripheralTypes(fr.coppernic.cpcframework.cpcpowermgmt.cone.PowerMgmt.PeripheralTypesCone.RfidSc).
+                setManufacturers(fr.coppernic.cpcframework.cpcpowermgmt.cone.PowerMgmt.ManufacturersCone.Ask).
+                setModels(fr.coppernic.cpcframework.cpcpowermgmt.cone.PowerMgmt.ModelsCone.Ucm108).
+                setInterfaces(fr.coppernic.cpcframework.cpcpowermgmt.cone.PowerMgmt.InterfacesCone.ExpansionPort).
                 build();
 
         // Instantiates ASK reader object
@@ -162,19 +152,6 @@ public class MainActivity extends AppCompatActivity  implements InstanceListener
 
     }
 
-    @Override
-    public void onTagDiscovered(RfidTag rfidTag) {
-
-        Log.d(TAG, "ATR: " + CpcBytes.byteArrayToString(rfidTag.getAtr()));
-
-
-    }
-
-    @Override
-    public void onDiscoveryStopped() {
-        Log.d(TAG, "Discovery stopped");
-    }
-
     /**
      * Waits a random time between 0 and 4 seconds
      */
@@ -204,5 +181,10 @@ public class MainActivity extends AppCompatActivity  implements InstanceListener
                 tvTotal.setText(Integer.toString(total));
             }
         });
+    }
+
+    @Override
+    public void OnGetReaderInstance(Reader reader) {
+        this.reader = reader;
     }
 }
